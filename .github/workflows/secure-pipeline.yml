@@ -1,3 +1,5 @@
+#TODO: fix: lowercase repo names shouldn't be hardcoded
+
 name: Secure CI/CD Pipeline
 
 on:
@@ -62,12 +64,12 @@ jobs:
         with:
           context: .
           load: true # Load into local docker daemon for Trivy scanning
-          tags: ghcr.io/${{ github.repository }}/secure-api:latest
+          tags: ghcr.io/thejapanesecowboy/uta_cyber/secure-api:latest
 
       - name: Run Trivy Vulnerability Scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'ghcr.io/${{ github.repository }}/secure-api:latest'
+          image-ref: 'ghcr.io/thejapanesecowboy/uta_cyber/secure-api:latest'
           format: 'sarif'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
@@ -85,6 +87,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}/secure-api:latest
+          tags: ghcr.io/thejapanesecowboy/uta_cyber/secure-api:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
