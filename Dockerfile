@@ -1,11 +1,9 @@
 # Use a minimal, secure base image
 FROM python:3.11-slim-bookworm
 
-# PATCH 1: Force update of all OS-level Debian packages to clear Trivy CVEs
-# We run apt-get upgrade and immediately clear the cache to keep the image small
+# Force update of all OS-level Debian packages to clear OS CVEs
 RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
 
-# Prevent Python from writing pyc files and keep stdout unbuffered
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
@@ -14,14 +12,14 @@ RUN adduser --disabled-password --gecos "" appuser
 
 WORKDIR /app
 
-# Install dependencies first (leverages Docker cache)
 COPY requirements.txt .
 
-# PATCH 2  (Replace the above with this):
-RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
+# THE FINAL PATCH: 
+# Explicitly force pip to overwrite the vulnerable base-image versions 
+# with the exact fixed versions Trivy requested.
+RUN pip install --no-cache-dir --upgrade pip "setuptools>=78.1.1" "msgpack>=1.2.1" wheel && \
     pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
 COPY hookem_api.py .
 
 # Enforce non-root execution
