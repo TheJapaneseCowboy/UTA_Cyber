@@ -17,8 +17,8 @@ WORKDIR /app
 # Install dependencies first (leverages Docker cache)
 COPY requirements.txt .
 
-# PATCH 2: Upgrade pip itself to clear Python packaging CVEs, then install requirements
-RUN pip install --no-cache-dir --upgrade pip && \
+# PATCH 2  (Replace the above with this):
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
     pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
