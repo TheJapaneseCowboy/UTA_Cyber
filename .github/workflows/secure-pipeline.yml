@@ -75,7 +75,7 @@ jobs:
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
           ignore-unfixed: true 
-          exit-code: '0' # Set to 0 to guarantee the pipeline completes successfully
+          exit-code: '1' # Set to 0 to guarantee the pipeline completes successfully
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v4 # fixing deprication warning 
