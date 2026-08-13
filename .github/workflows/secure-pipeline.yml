@@ -74,7 +74,7 @@ jobs:
           format: 'table' # Changed from 'sarif' to 'table' so we can read it
           severity: 'CRITICAL,HIGH'
           ignore-unfixed: true 
-          exit-code: '0' # Temporarily set to 0 so the build doesn't crash while we debug
+          exit-code: '1' # Set back to 1 to enforce strict security!
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
