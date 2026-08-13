@@ -21,9 +21,9 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 COPY requirements.txt .
 
 # Install dependencies strictly into the venv
-RUN pip install --no-cache-dir --upgrade pip setuptools wheel msgpack && \
+RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
-
+    
 COPY main.py .
 
 # Change ownership of the venv and app files to our non-root user
