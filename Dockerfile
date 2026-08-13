@@ -24,10 +24,13 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
     
-COPY main.py .
+# setuptools bundles vulnerable copies of jaraco.context and wheel in _vendor/,
+# and pip can't upgrade those. Not needed at runtime anyway, so remove them
+# from the venv and from the system python.
+RUN pip uninstall -y setuptools wheel pip && \
+    /usr/local/bin/python3 -m pip uninstall -y setuptools wheel pip
 
-# Change ownership of the venv and app files to our non-root user
-RUN chown -R appuser:appuser /app /opt/venv
+COPY main.py .
 
 # Enforce non-root execution
 USER appuser
